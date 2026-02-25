@@ -19,13 +19,13 @@ class Dinosaur
 
     public function getSizeDescription(): string
     {
-        if ($this->length < 5) {
-            return 'small';
-        }
-        if ($this->length < 10) {
+        if ($this->length >= 5 && $this->length < 10) {
             return 'medium';
         }
+        if ($this->length >= 10) {
         return 'large';
+        }
+        return 'small';
     }
 
     public function getName(): string
