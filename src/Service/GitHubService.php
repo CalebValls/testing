@@ -4,19 +4,29 @@ namespace App\Service;
 
 use App\Enum\HealthStatus;
 use Symfony\Component\HttpClient\HttpClient;
+use Psr\Log\LoggerInterface;
 
 class GitHubService
 {
+    public function __construct(private LoggerInterface $logger)
+    {
+    }
 
     public function getHealthReport(string $dinoName): HealthStatus
     {
         $health = HealthStatus::HEALTHY;
         $client = HttpClient::create();
+
         $response = $client->request(
             method: 'GET',
             url: 'https://api.github.com/repos/SymfonyCasts/dino-park/issues'
         );
 
+        $this->logger->info('Request Dino Issues', [
+            'dino' => $dinoName,
+            'responseStatus' => $response->getStatusCode(),
+        ]);
+        
         foreach ($response->toArray() as $issue) {
             if (str_contains($issue['title'], $dinoName)) {
                 $health = $this->getDinoStatusFromLabels($issue['labels']);
