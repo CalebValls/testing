@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Enum\HealthStatus;
+
 class Dinosaur
 {
     private string $name;
     private string $genus;
     private int $length;
     private string $enclosure;
+    private HealthStatus $health = HealthStatus::HEALTHY;
 
     public function __construct(string $name, string $genus = 'Unknown', int $length = 0, string $enclosure = 'Unknown')
     {
@@ -23,9 +26,22 @@ class Dinosaur
             return 'medium';
         }
         if ($this->length >= 10) {
-        return 'large';
+            return 'large';
         }
         return 'small';
+    }
+        public function setHealth(HealthStatus $health): void
+    {
+        $this->health = $health;
+    }
+
+    public function getHealth(): HealthStatus
+    {
+        return $this->health;
+    }
+    public function isAcceptingVisitors(): bool
+    {
+        return $this->health === HealthStatus::HEALTHY;
     }
 
     public function getName(): string
@@ -47,4 +63,6 @@ class Dinosaur
     {
         return $this->enclosure;
     }
+
+
 }
