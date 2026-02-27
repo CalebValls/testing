@@ -2,6 +2,7 @@
 
 namespace App\Tests\Service;
 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 use App\Service\GitHubService;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -11,17 +12,16 @@ use App\Enum\HealthStatus;
 class GitHubServiceTest extends TestCase
 {    
     #[DataProvider('dinoNameProvider')]
-    public function testGetHealthReturnsCorrectHealthStatusForDino($expectedStatus, $dinoName): void
+    public function testGetHealthReturnsCorrectHealthStatusForDino(HealthStatus $expectedStatus, string $dinoName): void
     {
 
         $mockLogger = $this->createMock(LoggerInterface::class);
+        $mockClient = $this->createMock(HttpClientInterface::class);
+        $service = new GitHubService($mockClient, $mockLogger);
 
-        $service = new GitHubService($mockLogger);
+self::assertSame($expectedStatus, $service->getHealthReport($dinoName));    }
 
-        self::assertSame($expectedStatus, $service->getHealthReport($dinoName));
-    }
-
-    public static function dinoNameProvider(): \Generator
+    public static function dinoNameProvider(): \Generator  
     {
         yield 'Sick Dino' => [
             HealthStatus::SICK,
