@@ -4,20 +4,19 @@ namespace App\Tests;
 
 use App\Entity\Dinosaur;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\CodeCoverage\Test\TestSize\Medium;
 use PHPUnit\Framework\Attributes\DataProvider;
 use App\Enum\HealthStatus;
 
 class DinosaurTest extends TestCase
 {
-    public function testItWorksEquals(): void // ==
-    {
-        self::assertEquals('42', 42);
-    }
-    public function testItWorksSame(): void // === 
-    {
-        self::assertSame(42, 42);
-    }
+    // public function testItWorksEquals(): void // ==
+    // {
+    //     self::assertEquals('42', 42);
+    // }
+    // public function testItWorksSame(): void // === 
+    // {
+    //     self::assertSame(42, 42);
+    // }
     #[DataProvider('sizeDescriptionProvider')]
     public function testSizeDescriptiomFromDinoIsCorrect(int $length, string $expectedSize): void
     {
@@ -61,7 +60,6 @@ class DinosaurTest extends TestCase
 
     public function testIsNotAcceptingVisitorsIfSick(): void
     {
-        // $this->markTestIncomplete('This test is not implemented yet');
         $dino = new Dinosaur(name: 'Bumpy');
         $dino->setHealth(HealthStatus::SICK);
 
