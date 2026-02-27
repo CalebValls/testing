@@ -18,7 +18,7 @@ class DinosaurTest extends TestCase
     //     self::assertSame(42, 42);
     // }
     #[DataProvider('sizeDescriptionProvider')]
-    public function testSizeDescriptiomFromDinoIsCorrect(int $length, string $expectedSize): void
+    public function testSizeDescriptionFromDinoIsCorrect(int $length, string $expectedSize): void
     {
         $dino = new Dinosaur(
             name: 'Big Eaty', //cool dude
@@ -58,11 +58,18 @@ class DinosaurTest extends TestCase
         self::assertTrue($dino->isAcceptingVisitors());
     }
 
-    public function testIsNotAcceptingVisitorsIfSick(): void
+    #[DataProvider('healthStatusProvider')]
+    public function testIsNotAcceptingVisitorsBasedOnHealthStatus(HealthStatus $healthStatus, bool $expectedVisitorsStatus): void
     {
         $dino = new Dinosaur(name: 'Bumpy');
-        $dino->setHealth(HealthStatus::SICK);
+        $dino->setHealth($healthStatus);
+        self::assertSame($expectedVisitorsStatus, $dino->isAcceptingVisitors());
+    }
 
-        self::assertFalse($dino->isAcceptingVisitors());
+    public static function healthStatusProvider(): \Generator
+    {
+        yield 'Healthy Dino is accepting visitors' => [HealthStatus::HEALTHY, true];
+        yield 'Sick Dino is not accepting visitors if is sick' => [HealthStatus::SICK, false];
+        yield 'Hungry Dino is accepting visitors' => [HealthStatus::HUNGRY, true];
     }
 }

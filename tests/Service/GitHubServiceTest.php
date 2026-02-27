@@ -16,7 +16,7 @@ class GitHubServiceTest extends TestCase
     public function testGetHealthReturnsCorrectHealthStatusForDino(HealthStatus $expectedStatus, string $dinoName): void
     {
 
-        $mockLogger = $this->createMock(LoggerInterface::class); // dummy
+        $mockLogger = $this->createStub(LoggerInterface::class); // dummy
         $mockHttpClient = $this->createMock(HttpClientInterface::class); // mock
         $mockResponse = $this->createStub(ResponseInterface::class); ///stub
 
@@ -54,7 +54,7 @@ class GitHubServiceTest extends TestCase
 
         yield 'Healthy Dino' => [
             HealthStatus::HEALTHY,
-            'Igor'
+            'Maverick'
         ];
     }
 }
